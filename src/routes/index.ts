@@ -16,4 +16,20 @@ router.get('/', async (req: Request, res: Response): Promise<void> => {
     }
 })
 
+router.get('/:id', async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { id } = req.params
+        const requestApiUrl: string = `https://store.steampowered.com/api/appdetails?appids=${id}`
+        const { data }: AxiosResponse<IUniqueApp> = await axios.get(
+            requestApiUrl,
+        )
+        if (!data[id].success) {
+            throw "Can't find this app"
+        }
+        res.status(200).json(data[id].data)
+    } catch (err) {
+        res.status(400).json({ error: err })
+    }
+})
+
 export default router
