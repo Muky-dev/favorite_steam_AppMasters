@@ -5,7 +5,7 @@
     "scripts": {
         "build": "tsc",
         "start": "node build/app.js",
-        "devStart": "nodemon --watch src --exec ts-node src/app.ts"
+        "devStart": "nodemon --watch src --exec ts-node --files src/app.ts"
     },
     "author": "Muky-dev",
     "license": "MIT",
