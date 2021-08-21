@@ -1,6 +1,6 @@
 import express, { Express } from 'express'
 import mongoose from 'mongoose'
-import rateLimit, { RateLimit } from 'express-rate-limit'
+import rateLimit from 'express-rate-limit'
 import cors from 'cors'
 
 import favoriteRoutes from './routes/favorite'
