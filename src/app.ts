@@ -15,6 +15,11 @@ app.use(express.json())
 app.use('/favorite', favoriteRoutes)
 app.use('/', rootRoutes)
 
+//404 Handler
+app.use('*', (req, res, next) => {
+    res.status(404).json({ message: 'Not found'})
+})
+
 const mongoURI: string = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.vabk6.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`
 
 mongoose.connect(mongoURI, {
