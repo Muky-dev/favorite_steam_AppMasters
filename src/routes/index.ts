@@ -17,8 +17,8 @@ router.get('/', async (req: Request, res: Response): Promise<void> => {
 })
 
 router.get('/:id', async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params
     try {
-        const { id } = req.params
         const requestApiUrl: string = `https://store.steampowered.com/api/appdetails?appids=${id}`
         const { data }: AxiosResponse<IUniqueApp> = await axios.get(
             requestApiUrl,
