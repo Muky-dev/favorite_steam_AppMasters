@@ -35,16 +35,30 @@ router.post('/', async (req: Request, res: Response): Promise<void> => {
             throw 'Please insert a valid appid'
         }
 
+        const fixed = () => {
+            let parsedRating = parseInt(rating)
+            if (parsedRating > 5) {
+                parsedRating = 5
+            } else if (parsedRating < 0) {
+                parsedRating = 0
+            }
+            return parsedRating
+        }
+        const newRating = fixed()
+
         const favoriteInstance: IFavorite = await Favorite.create({
             appid: appid,
             userHash: user,
-            rating: rating,
+            rating: newRating,
             data: data[appid].data,
         })
 
         res.json({
             message: 'Favorite created',
-            data: { appid: favoriteInstance.appid, rating: rating },
+            data: {
+                appid: favoriteInstance.appid,
+                rating: favoriteInstance.rating,
+            },
         })
     } catch (err) {
         res.status(500).json({ error: err })
