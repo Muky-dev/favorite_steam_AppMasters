@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose'
+import { IFavorite } from '../types/favorite'
 
-const FavoriteSchema = new Schema({
+const FavoriteSchema: Schema = new Schema({
     userHash: {
         type: String,
         required: true,
@@ -12,6 +13,9 @@ const FavoriteSchema = new Schema({
     rating: {
         type: Number,
     },
+    data: {
+        type: Object,
+    },
 })
 
-export default model('Favorite', FavoriteSchema)
+export default model<IFavorite>('Favorite', FavoriteSchema)
