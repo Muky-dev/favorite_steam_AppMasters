@@ -9,6 +9,7 @@
 ## Resumo
 - Projeto criado para o processo de seleção de estágiarios da App Masters: https://appmasters.io
 - Desenvolvido com Node e Typescript, utilizando Express para lidar com requisições e respostas HTTP.
+- Foi utilizado um rate-limiter para limitar a quantidade de requisições para a API da Steam `Limitado a 200 Requests a cada 5 minutos`
 
 ### Adicional
 - Rotas de favorito com error handling
