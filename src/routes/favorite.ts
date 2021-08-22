@@ -45,10 +45,10 @@ router.post('/:appid', async (req: Request, res: Response): Promise<void> => {
     const { rating } = req.body
     const { appid } = req.params
     const user = req.user
-    const parsedAppId = parseInt(appid)
 
     const requestApiUrl = `https://store.steampowered.com/api/appdetails?appids=${appid}`
     try {
+        const parsedAppId = parseInt(appid)
         const favoriteExists: IFavorite | null = await Favorite.findOne({
             appid: parsedAppId,
             userHash: user,
@@ -57,12 +57,21 @@ router.post('/:appid', async (req: Request, res: Response): Promise<void> => {
         if (favoriteExists) {
             throw 'This favorite already exists'
         }
-        const { data }: AxiosResponse<IUniqueApp> = await axios.get(
-            requestApiUrl,
-        )
-        // verify if the app exists and if successfully had a response
-        if (!data[appid].success || !appid) {
-            throw 'Please provide a valid appid in url params'
+
+        const dataExists = await FavoriteData.findOne({ appid: parsedAppId })
+
+        if (!dataExists) {
+            const { data }: AxiosResponse<IUniqueApp> = await axios.get(
+                requestApiUrl,
+            )
+            // verify if the app exists and if successfully had a response
+            if (!data[appid].success || !appid) {
+                throw 'Please provide a valid appid in url params'
+            }
+            await FavoriteData.create({
+                appid: parsedAppId,
+                data: data[appid].data,
+            })
         }
 
         let parsedRating
@@ -72,11 +81,6 @@ router.post('/:appid', async (req: Request, res: Response): Promise<void> => {
                 throw 'Please provide a rating between 0 and 5'
             }
         }
-
-        const favoriteData = await FavoriteData.create({
-            appid: parsedAppId,
-            data: data[appid].data,
-        })
 
         const favoriteInstance: IFavorite = await Favorite.create({
             appid: parsedAppId,
