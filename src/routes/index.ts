@@ -14,7 +14,7 @@ router.get('/', async (req: Request, res: Response): Promise<void> => {
             res.status(200).json(cached)
         } else {
             const { data }: AxiosResponse<IApplist> = await axios.get(baseUrl)
-            const appArray = data.applist.apps.slice(0, 100)
+            const appArray = data.applist.apps.slice(0, 300)
             cache.put(baseUrl, appArray)
             res.status(200).json(appArray)
         }
