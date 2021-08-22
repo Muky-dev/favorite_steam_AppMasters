@@ -26,7 +26,7 @@
 
 ### Favorite (todos os endpoints aqui necessitam do "user-hash" no header)
 - `GET` - `/favorite` Retorna todos os favoritos do usuário com seus respectivos dados ("user", "appid", "rating" e "data")
-- `POST` - `/favorite/:appid` Recebe "appid" no parâmetro de url, podendo receber "rating" que vai de 0 a 5, no corpo da requisicão e adiciona aos favoritos do usuário
+- `POST` - `/favorite/:appid` Recebe "appid" no parâmetro de url, podendo receber "rating", que vai de 0 a 5, no corpo da requisicão e adiciona aos favoritos do usuário
 - `DELETE` - `/favorite/:appid` Recebe "appid" no parâmetro de url e deleta esse favorito do usuário (se ele existir)
 
 ## Infos:
