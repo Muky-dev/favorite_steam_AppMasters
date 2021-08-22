@@ -13,9 +13,6 @@ const FavoriteSchema: Schema = new Schema({
     rating: {
         type: Number,
     },
-    data: {
-        type: Object,
-    },
 })
 
 export default model<IFavorite>('Favorite', FavoriteSchema)
