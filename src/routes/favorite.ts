@@ -38,7 +38,7 @@ router.post('/:appid', async (req: Request, res: Response): Promise<void> => {
         )
         // verify if the app exists and if successfully had a response
         if (!data[appid].success || !appid) {
-            throw 'Please insert a valid appid'
+            throw 'Please provide a valid appid in url params'
         }
 
         const parsedRating = parseInt(rating)
