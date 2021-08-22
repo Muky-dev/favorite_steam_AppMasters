@@ -17,7 +17,7 @@
 - Usando MongoDB para armazenar informações dos favoritos
 
 ## Link para a API rodando no Heroku: 
-- 
+### https://favorite-steam-api.herokuapp.com/
 
 ## Rotas
 
