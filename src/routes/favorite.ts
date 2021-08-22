@@ -1,8 +1,8 @@
 import Router, { Request, Response } from 'express'
+import cache from 'memory-cache'
 import axios, { AxiosResponse } from 'axios'
 
 import Favorite from '../models/Favorite'
-import FavoriteData from '../models/FavoriteData'
 import { IUniqueApp } from '../types/axios'
 import { IFavorite } from '../types/favorite'
 
@@ -21,14 +21,19 @@ router.get('/', async (req: Request, res: Response): Promise<void> => {
         }
         const favoriteWithData = await Promise.all(
             favoriteArray.map(async (elem) => {
-                const { data } = await FavoriteData.findOne({
-                    appid: elem.appid,
-                })
+                const data = cache.get(elem.appid)
                 let favoriteWithData = {
                     appid: elem.appid,
                     userHash: elem.userHash,
                     rating: elem.rating,
                     data: data,
+                }
+                if (!data) {
+                    const { data }: AxiosResponse<IUniqueApp> = await axios.get(
+                        `https://store.steampowered.com/api/appdetails?appids=${elem.appid}`,
+                    )
+                    cache.put(elem.appid, data[elem.appid].data)
+                    favoriteWithData.data = data[elem.appid].data
                 }
                 return favoriteWithData
             }),
@@ -58,7 +63,7 @@ router.post('/:appid', async (req: Request, res: Response): Promise<void> => {
             throw 'This favorite already exists'
         }
 
-        const dataExists = await FavoriteData.findOne({ appid: parsedAppId })
+        const dataExists = cache.get(appid)
 
         if (!dataExists) {
             const { data }: AxiosResponse<IUniqueApp> = await axios.get(
@@ -68,10 +73,7 @@ router.post('/:appid', async (req: Request, res: Response): Promise<void> => {
             if (!data[appid].success || !appid) {
                 throw 'Please provide a valid appid in url params'
             }
-            await FavoriteData.create({
-                appid: parsedAppId,
-                data: data[appid].data,
-            })
+            cache.put(appid, data[appid].data)
         }
 
         let parsedRating
