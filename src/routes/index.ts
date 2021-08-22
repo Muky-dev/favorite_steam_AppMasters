@@ -27,7 +27,7 @@ router.get('/:id', async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params
     const requestApiUrl: string = `https://store.steampowered.com/api/appdetails?appids=${id}`
     try {
-        const cached = cache.get(requestApiUrl)
+        const cached = cache.get(id)
         if (cached) {
             res.status(200).json(cached)
         } else {
@@ -38,7 +38,7 @@ router.get('/:id', async (req: Request, res: Response): Promise<void> => {
                 throw "Can't find this app"
             }
             const dataResponse = data[id].data
-            cache.put(requestApiUrl, dataResponse)
+            cache.put(id, dataResponse)
             res.status(200).json(dataResponse)
         }
     } catch (err) {
