@@ -41,9 +41,12 @@ router.post('/:appid', async (req: Request, res: Response): Promise<void> => {
             throw 'Please provide a valid appid in url params'
         }
 
-        const parsedRating = parseInt(rating)
-        if (parsedRating > 5 || parsedRating < 0) {
-            throw 'Please provide a rating between 0 and 5'
+        let parsedRating
+        if (rating) {
+            parsedRating = parseInt(rating)
+            if (parsedRating > 5 || parsedRating < 0) {
+                throw 'Please provide a rating between 0 and 5'
+            }
         }
         const parsedAppId = parseInt(appid)
 
