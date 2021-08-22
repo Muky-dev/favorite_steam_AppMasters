@@ -89,7 +89,7 @@ router.delete('/:appid', async (req: Request, res: Response): Promise<void> => {
         if (!favoriteExists) {
             throw "this favorite doesn't exist"
         }
-        favoriteExists.delete()
+        await favoriteExists.delete()
         res.status(200).json({ message: 'Favorite deleted' })
     } catch (err) {
         res.status(400).json({ error: err })
