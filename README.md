@@ -1,5 +1,9 @@
 # Favorite Steam API
 
+<p align="center">
+  <img alt="programing gif" src="https://media0.giphy.com/media/LmNwrBhejkK9EFP504/giphy.gif?cid=ecf05e47wop40m3lc4or31tbp0ejk16rbvlezoviakl81kqk&rid=giphy.gif&ct=g">
+</p>
+
 ## Sumário
 * [Resumo](#resumo)
 * [Link da API rodando](#link-para-a-api-rodando-no-heroku)
@@ -13,7 +17,7 @@
 
 ### Adicional
 - Rotas de favorito com error handling
-- Usando cache em memória para as rotas raiz
+- Usando cache em memória para todas as requisições
 - Usando MongoDB para armazenar informações dos favoritos
 
 ## Link para a API rodando no Heroku: 
