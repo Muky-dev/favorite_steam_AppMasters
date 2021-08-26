@@ -17,29 +17,31 @@ router.get('/', async (req: Request, res: Response): Promise<void> => {
         })
 
         if (favoriteArray.length == 0) {
-            throw "This user don't have favorites"
-        }
-        const favoriteWithData = await Promise.all(
-            favoriteArray.map(async (elem) => {
-                const data = cache.get(elem.appid)
-                let favoriteWithData = {
-                    appid: elem.appid,
-                    userHash: elem.userHash,
-                    rating: elem.rating,
-                    data: data,
-                }
-                if (!data) {
-                    const { data }: AxiosResponse<IUniqueApp> = await axios.get(
-                        `https://store.steampowered.com/api/appdetails?appids=${elem.appid}`,
-                    )
-                    cache.put(elem.appid, data[elem.appid].data)
-                    favoriteWithData.data = data[elem.appid].data
-                }
-                return favoriteWithData
-            }),
-        )
+            res.status(200).json(favoriteArray)
+        } else {
+            const favoriteWithData = await Promise.all(
+                favoriteArray.map(async (elem) => {
+                    const data = cache.get(elem.appid)
+                    let favoriteWithData = {
+                        appid: elem.appid,
+                        userHash: elem.userHash,
+                        rating: elem.rating,
+                        data: data,
+                    }
+                    if (!data) {
+                        const { data }: AxiosResponse<IUniqueApp> =
+                            await axios.get(
+                                `https://store.steampowered.com/api/appdetails?appids=${elem.appid}`,
+                            )
+                        cache.put(elem.appid, data[elem.appid].data)
+                        favoriteWithData.data = data[elem.appid].data
+                    }
+                    return favoriteWithData
+                }),
+            )
 
-        res.status(200).json(favoriteWithData)
+            res.status(200).json(favoriteWithData)
+        }
     } catch (err) {
         res.status(400).json({ error: err })
     }
